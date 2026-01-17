@@ -16,15 +16,9 @@ function getDbValue($conn, $query, $default = 0)
 {
   $result = $conn->query($query);
   if ($result && $result->num_rows > 0) {
-    // 1. Ambil array hasil ke dalam variabel $row
+    // Ambil elemen pertama dari hasil
     $row = $result->fetch_assoc();
-
-    // 2. Gunakan variabel $row dengan reset() atau array_shift()
-    // array_shift() adalah cara yang lebih baik untuk mengambil elemen pertama dari array
     return array_shift($row);
-
-    // ATAU jika tetap ingin menggunakan reset(), gunakan variabel:
-    // return reset($row);
   }
   return $default;
 }
@@ -37,11 +31,11 @@ if ($role == 'admin') {
 
   // Jasa Paling Laris (Mengembalikan Nama Jasa)
   $query_laris = "SELECT j.nama_jasa 
-                    FROM orders o 
-                    JOIN jasa j ON o.jasa_id = j.id 
-                    GROUP BY j.id 
-                    ORDER BY COUNT(o.id) DESC 
-                    LIMIT 1";
+                      FROM orders o 
+                      JOIN jasa j ON o.jasa_id = j.id 
+                      GROUP BY j.id 
+                      ORDER BY COUNT(o.id) DESC 
+                      LIMIT 1";
   $jasa_laris = getDbValue($conn, $query_laris, 'Belum Ada');
 
   // Susun data untuk kartu statistik Admin
@@ -57,12 +51,12 @@ if ($role == 'admin') {
 
   // Jasa yang Paling Sering Saya Pesan (Mengembalikan Nama Jasa)
   $query_my_favorite = "SELECT j.nama_jasa
-                          FROM orders o
-                          JOIN jasa j ON o.jasa_id = j.id
-                          WHERE o.user_id = {$user_id}
-                          GROUP BY j.id
-                          ORDER BY COUNT(o.id) DESC
-                          LIMIT 1";
+                              FROM orders o
+                              JOIN jasa j ON o.jasa_id = j.id
+                              WHERE o.user_id = {$user_id}
+                              GROUP BY j.id
+                              ORDER BY COUNT(o.id) DESC
+                              LIMIT 1";
   $my_favorite_jasa = getDbValue($conn, $query_my_favorite, 'Belum Ada');
 
   // Susun data untuk kartu statistik User
@@ -76,7 +70,7 @@ if ($role == 'admin') {
 
 <div class="p-4 mb-4 bg-light rounded-3 border-start border-5 border-primary shadow-sm">
   <div class="container-fluid py-2">
-    <h1 class="display-5 fw-bold text-dark">👋 Selamat Datang, <?= $_SESSION['username'] ?? 'Pengguna' ?>!</h1>
+    <h1 class="fw-bold text-dark fs-3 fs-md-5">👋 Selamat Datang, <?= $_SESSION['username'] ?? 'Pengguna' ?>!</h1>
     <p class="fs-6 text-muted">
       <?php if ($role == 'admin'): ?>
         Pantau kinerja dan kelola semua layanan di platform Sibersih.
@@ -87,21 +81,21 @@ if ($role == 'admin') {
   </div>
 </div>
 
-<h4 class="mt-4 mb-3 text-secondary border-bottom pb-2">📊 Data dan Statistik Utama</h4>
+<h4 class="mt-4 mb-3 text-secondary border-bottom pb-2 fs-5">📊 Data dan Statistik Utama</h4>
 <div class="row mb-4">
   <?php foreach ($stats as $stat): ?>
-    <div class="col-xl-3 col-md-6 mb-4">
+    <div class="col-12 col-sm-6 col-lg-3 mb-4">
       <div class="card border-0 shadow h-100 py-2" style="border-left: 5px solid var(--bs-<?= $stat['color'] ?>);">
         <div class="card-body">
-          <div class="row no-gutters align-items-center">
+          <div class="row g-0 align-items-center">
             <div class="col me-2">
-              <div class="text-xs font-weight-bold text-<?= $stat['color'] ?> text-uppercase mb-1 small">
+              <div class="text-<?= $stat['color'] ?> text-uppercase mb-1 small fw-semibold">
                 <?= $stat['title'] ?>
               </div>
-              <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $stat['value'] ?></div>
+              <div class="h4 mb-0 fw-bold text-gray-800 fs-5"><?= $stat['value'] ?></div>
             </div>
             <div class="col-auto">
-              <i class="<?= $stat['icon'] ?> fa-3x text-gray-300 opacity-50"></i>
+              <i class="<?= $stat['icon'] ?> fa-2x fa-sm-3x text-gray-300 opacity-50"></i>
             </div>
           </div>
         </div>
@@ -110,31 +104,31 @@ if ($role == 'admin') {
   <?php endforeach; ?>
 </div>
 
-<h4 class="mt-4 mb-3 text-secondary border-bottom pb-2">⚡ Aksi Cepat</h4>
+<h4 class="mt-4 mb-3 text-secondary border-bottom pb-2 fs-5">⚡ Aksi Cepat</h4>
 <div class="row">
   <?php if ($role == 'admin'): ?>
-    <div class="col-md-4 mb-3">
+    <div class="col-12 col-md-4 mb-3">
       <a href="<?= BASE_URL ?>admin/jasa_add.php" class="btn btn-primary btn-lg w-100 shadow-sm rounded-3 py-3">
-        <i class="fas fa-plus-circle me-2"></i> **Tambah Jasa Baru**
+        <i class="fas fa-plus-circle me-2"></i> <span class="fw-bold">Tambah Jasa Baru</span>
       </a>
     </div>
-    <div class="col-md-4 mb-3">
+    <div class="col-12 col-md-4 mb-3">
       <a href="<?= BASE_URL ?>admin/jasa_list.php" class="btn btn-outline-secondary btn-lg w-100 rounded-3 py-3">
         <i class="fas fa-list-alt me-2"></i> Kelola Jasa
       </a>
     </div>
-    <div class="col-md-4 mb-3">
+    <div class="col-12 col-md-4 mb-3">
       <a href="<?= BASE_URL ?>admin/orders_list.php" class="btn btn-warning btn-lg w-100 rounded-3 py-3">
         <i class="fas fa-receipt me-2"></i> Lihat Semua Order
       </a>
     </div>
   <?php else: ?>
-    <div class="col-md-6 mb-3">
+    <div class="col-12 col-md-6 mb-3">
       <a href="<?= BASE_URL ?>user/jasa_list.php" class="btn btn-success btn-lg w-100 py-3 shadow-lg rounded-3">
-        <i class="fas fa-search me-2"></i> **Cari Layanan Sekarang**
+        <i class="fas fa-search me-2"></i> <span class="fw-bold">Cari Layanan Sekarang</span>
       </a>
     </div>
-    <div class="col-md-6 mb-3">
+    <div class="col-12 col-md-6 mb-3">
       <a href="<?= BASE_URL ?>user/jasa_order.php" class="btn btn-info btn-lg w-100 py-3 rounded-3 text-white">
         <i class="fas fa-history me-2"></i> Lihat Pesanan Saya
       </a>

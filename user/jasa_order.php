@@ -51,7 +51,7 @@ if (!isset($_GET['id'])) {
       $stmtInsert->bind_param("iisssss", $user_id, $jasa_id, $full_name, $lokasi, $phone, $tanggal_layanan, $metode_pembayaran);
 
       if ($stmtInsert->execute()) {
-        $message = "🎉 **Order berhasil dibuat!** Anda akan dihubungi untuk konfirmasi layanan. Terima kasih!";
+        $message = "🎉 Order berhasil dibuat! Anda akan dihubungi untuk konfirmasi layanan. Terima kasih!";
         $messageType = "success";
       } else {
         $message = "Gagal membuat order. Silakan coba lagi. Error: " . $stmtInsert->error;

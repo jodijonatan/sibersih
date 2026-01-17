@@ -14,13 +14,14 @@ $result = $conn->query($sql);
   .service-table {
     border-collapse: separate;
     border-spacing: 0 10px;
-    /* Jarak antar baris */
   }
 
   .service-table th {
     font-weight: 600;
     color: #34495e;
     border-bottom: 2px solid #e0e0e0;
+    /* Tambahkan padding agar responsif lebih baik */
+    padding: 10px 15px;
   }
 
   .service-table td {
@@ -41,17 +42,56 @@ $result = $conn->query($sql);
   /* Batasi deskripsi agar tabel rapi */
   .desc-cell {
     max-width: 250px;
-    /* Batasi lebar kolom */
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+
+  /* --- MEDIA QUERIES UNTUK RESPONSIVITAS TABEL --- */
+
+  /* Sembunyikan kolom Gambar dan Deskripsi pada layar di bawah medium (Tablet/Mobile) */
+  @media (max-width: 991.98px) {
+
+    /* Sembunyikan kolom header */
+    .service-table th:nth-child(2),
+    .service-table th:nth-child(4) {
+      display: none;
+    }
+
+    /* Sembunyikan kolom data */
+    .service-table td:nth-child(2),
+    .service-table td:nth-child(4) {
+      display: none;
+    }
+
+    /* Kecilkan padding pada header card di mobile */
+    .card-header-responsive {
+      padding: 1rem !important;
+    }
+
+    /* Pastikan tombol tetap terlihat, mungkin menumpuk */
+    .card-body.d-flex {
+      flex-direction: column;
+      align-items: flex-start !important;
+    }
+
+    .card-body.d-flex h2 {
+      font-size: 1.5rem;
+      /* Judul lebih kecil */
+      margin-bottom: 10px;
+    }
+
+    .btn-lg {
+      width: 100%;
+      /* Tombol Tambah Jasa Baru full width */
+    }
   }
 </style>
 
 <div class="p-4">
 
   <div class="card bg-light border-0 shadow-sm mb-4">
-    <div class="card-body d-flex justify-content-between align-items-center">
+    <div class="card-body d-flex justify-content-between align-items-center card-header-responsive">
       <h2 class="mb-0 text-primary fw-bold">
         <i class="fas fa-list-ul me-2"></i> Daftar & Kelola Jasa
       </h2>
@@ -69,9 +109,9 @@ $result = $conn->query($sql);
             <thead class="table-light">
               <tr>
                 <th class="py-3 ps-4">ID</th>
-                <th class="py-3">Gambar</th>
+                <th class="py-3 d-none d-lg-table-cell">Gambar</th>
                 <th class="py-3">Nama Jasa</th>
-                <th class="py-3">Deskripsi</th>
+                <th class="py-3 d-none d-md-table-cell">Deskripsi</th>
                 <th class="py-3">Harga</th>
                 <th class="py-3 pe-4 text-center">Aksi</th>
               </tr>
@@ -80,7 +120,7 @@ $result = $conn->query($sql);
               <?php while ($jasa = $result->fetch_assoc()): ?>
                 <tr>
                   <td class="ps-4"><?= $jasa['id'] ?></td>
-                  <td>
+                  <td class="d-none d-lg-table-cell">
                     <?php if ($jasa['gambar']): ?>
                       <img src="../uploads/<?= $jasa['gambar'] ?>" alt="<?= $jasa['nama_jasa'] ?>" class="jasa-img">
                     <?php else: ?>
@@ -88,7 +128,7 @@ $result = $conn->query($sql);
                     <?php endif; ?>
                   </td>
                   <td class="fw-bold"><?= $jasa['nama_jasa'] ?></td>
-                  <td class="text-muted desc-cell" title="<?= $jasa['deskripsi'] ?>">
+                  <td class="text-muted desc-cell d-none d-md-table-cell" title="<?= $jasa['deskripsi'] ?>">
                     <?= $jasa['deskripsi'] ?>
                   </td>
                   <td class="text-success fw-bold">Rp <?= number_format($jasa['harga'], 0, ',', '.') ?></td>

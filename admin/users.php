@@ -32,6 +32,13 @@ echo '
         color: white;
         padding: 0.5em 0.8em;
     }
+    /* Sembunyikan kolom ID di mobile (di bawah medium) */
+    @media (max-width: 767.98px) {
+        .user-table th:nth-child(1),
+        .user-table td:nth-child(1) {
+            display: none;
+        }
+    }
 </style>
 ';
 ?>
@@ -40,7 +47,7 @@ echo '
 
   <div class="card bg-dark text-white border-0 shadow-sm mb-4">
     <div class="card-body">
-      <h3 class="mb-0 fw-bold">
+      <h3 class="mb-0 fw-bold fs-4 fs-md-3">
         <i class="fas fa-users-cog me-2"></i> Kelola Daftar Pengguna
       </h3>
       <p class="mb-0 small opacity-75">Lihat atau hapus akun pengguna dan admin.</p>
@@ -80,7 +87,9 @@ echo '
                         class="btn btn-sm btn-outline-danger"
                         title="Hapus Pengguna"
                         onclick="return confirm('Yakin ingin menghapus pengguna <?= htmlspecialchars($user['username']) ?>? Tindakan ini tidak dapat dibatalkan.')">
-                        <i class="fas fa-trash"></i> Hapus
+
+                        <i class="fas fa-trash"></i>
+                        <span class="d-none d-md-inline"> Hapus</span>
                       </a>
                     <?php else: ?>
                       <span class="text-muted small">

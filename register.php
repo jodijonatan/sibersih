@@ -36,7 +36,7 @@ if (isset($_POST['register'])) {
       $stmt->bind_param("sss", $username, $hashed, $role);
 
       if ($stmt->execute()) {
-        $success = "🎉 **Registrasi berhasil!** Anda sekarang dapat login.";
+        $success = "🎉 Registrasi berhasil! Anda sekarang dapat login.";
       } else {
         $error = "Gagal registrasi: " . $stmt->error;
       }

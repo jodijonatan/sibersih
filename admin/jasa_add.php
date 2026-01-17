@@ -28,7 +28,7 @@ if (isset($_POST['submit'])) {
   $stmt->bind_param("ssds", $nama_jasa, $deskripsi, $harga, $gambar);
 
   if ($stmt->execute()) {
-    $message = "🎉 **Jasa berhasil ditambahkan!** Anda dapat melihatnya di daftar jasa.";
+    $message = "🎉 Jasa berhasil ditambahkan! Anda dapat melihatnya di daftar jasa.";
     $messageType = "success";
 
     // Reset form data setelah sukses
@@ -44,7 +44,7 @@ if (isset($_POST['submit'])) {
 
   <div class="card bg-info text-white border-0 shadow-sm mb-4">
     <div class="card-body">
-      <h3 class="mb-0 fw-bold">
+      <h3 class="mb-0 fw-bold fs-4 fs-md-3">
         <i class="fas fa-plus-square me-2"></i> Formulir Tambah Jasa
       </h3>
       <p class="mb-0 small opacity-75">Masukkan detail layanan kebersihan yang baru.</p>
@@ -90,11 +90,11 @@ if (isset($_POST['submit'])) {
 
             <hr class="my-4">
 
-            <div class="d-flex justify-content-between">
-              <a href="jasa_list.php" class="btn btn-outline-secondary btn-lg">
+            <div class="d-grid gap-3 d-md-flex justify-content-md-between">
+              <a href="jasa_list.php" class="btn btn-outline-secondary btn-lg order-2 order-md-1">
                 <i class="fas fa-arrow-left me-2"></i> Kembali
               </a>
-              <button type="submit" name="submit" class="btn btn-primary btn-lg shadow-sm">
+              <button type="submit" name="submit" class="btn btn-primary btn-lg shadow-sm order-1 order-md-2">
                 <i class="fas fa-save me-2"></i> Simpan Jasa
               </button>
             </div>
